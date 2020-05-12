@@ -80,7 +80,6 @@ class Pirate {
       x: gameSize.x * 0.25 + this.size.x,
       y: gameSize.y * 0.75 - this.size.y,
     };
-
   }
 }
 
@@ -102,44 +101,18 @@ class CannonBall {
   }
 }
 
-// draw: function(){
-//     screen.fillStyle = "black",
-//     screen.fillRect(this.x, this.y, canvas.width / 10, canvas.height/10) }
-// }
-// setInterval(loop, 80)
-
-// function loop(){
-//     screen.clearRect(0, 0, canvas.width, canvas.height);
-//     if(Keyboarder.isDown(37))
-//         player.x-=90;
-//     if(Keyboarder.isDown(39))
-//         player.x+=90;
-//     if(Keyboarder.isDown(38))
-//         player.y-=90;
-//     if(Keyboarder.isDown(40))
-//         player.y+=90;
-//     if(player.x > 315)
-//         player.x = 315;
-//     if(player.x < 135)
-//         player.x = 135;
-//     if(player.y < 135)
-//         player.y = 135;
-//     if(player.y > 315)
-//         player.y = 315
-//     gameboard.draw()
-//     player.draw();
 let game = new Game();
 this.keyboarder = Keyboarder;
 
 Keyboarder.on(Keyboarder.KEYS.RIGHT, function () {
-  game.pirate.center.x += 75;
+  if (game.pirate.center.x < 325) game.pirate.center.x += 75;
 });
 Keyboarder.on(Keyboarder.KEYS.LEFT, function () {
-  game.pirate.center.x -= 75;
+  if (game.pirate.center.x > 175) game.pirate.center.x -= 75;
 });
 Keyboarder.on(Keyboarder.KEYS.UP, function () {
-  game.pirate.center.y -= 75;
+  if (game.pirate.center.y > 175) game.pirate.center.y -= 75;
 });
 Keyboarder.on(Keyboarder.KEYS.DOWN, function () {
-  game.pirate.center.y += 75;
+  if (game.pirate.center.y < 325) game.pirate.center.y += 75;
 });
