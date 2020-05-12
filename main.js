@@ -8,7 +8,7 @@ class Game {
     this.ocean = new Ocean(gameSize);
     this.island = new Island(gameSize);
     this.pirate = new Pirate(gameSize);
-    this.doubloon = new Doubloon(gameSize)
+    this.doubloon = new Doubloon(gameSize);
     let animate = () => {
       this.drawOcean(screen, gameSize);
       this.drawIsland(screen, gameSize);
@@ -21,12 +21,7 @@ class Game {
 
   drawOcean(screen, gameSize) {
     screen.fillStyle = "#5290f2";
-    screen.fillRect(
-      0,
-      0,
-      gameSize.x,
-      gameSize.y
-    );
+    screen.fillRect(0, 0, gameSize.x, gameSize.y);
   }
   drawIsland(screen, gameSize) {
     screen.fillStyle = "#e3cbbc";
@@ -85,8 +80,10 @@ class Pirate {
       x: gameSize.x * 0.25 + this.size.x,
       y: gameSize.y * 0.75 - this.size.y,
     };
+
   }
 }
+
 class Doubloon {
   constructor(gameSize) {
     this.size = { x: gameSize.x / 20, y: gameSize.y / 20 };
@@ -96,11 +93,13 @@ class Doubloon {
     };
   }
 }
-class CannonBall{
-    constructor(gameSize){
-        this.size = {x: gameSize.x / 20, y: gameSize / 20}
-        
-    }
+
+class CannonBall {
+  constructor(gameSize) {
+    this.size = { x: gameSize.x / 20, y: gameSize / 20 };
+    this.axis = Math.round(Math.random());
+    thisdir;
+  }
 }
 
 // draw: function(){
@@ -129,3 +128,18 @@ class CannonBall{
 //         player.y = 315
 //     gameboard.draw()
 //     player.draw();
+let game = new Game();
+this.keyboarder = Keyboarder;
+
+Keyboarder.on(Keyboarder.KEYS.RIGHT, function () {
+  game.pirate.center.x += 75;
+});
+Keyboarder.on(Keyboarder.KEYS.LEFT, function () {
+  game.pirate.center.x -= 75;
+});
+Keyboarder.on(Keyboarder.KEYS.UP, function () {
+  game.pirate.center.y -= 75;
+});
+Keyboarder.on(Keyboarder.KEYS.DOWN, function () {
+  game.pirate.center.y += 75;
+});
