@@ -7,6 +7,8 @@ class Game {
     let gameSize = { x: canvas.width, y: canvas.height };
     this.ocean = new Ocean(gameSize);
     this.island = new Island(gameSize);
+    let bodies = []
+    // this.bodies = this.bodies.concat(new Pirate(gameSize))
     this.pirate = new Pirate(gameSize);
     this.doubloon = new Doubloon(gameSize);
     let animate = () => {
@@ -101,8 +103,7 @@ class CannonBall {
   }
 }
 
-let game = new Game();
-this.keyboarder = Keyboarder;
+let game = new Game()
 
 Keyboarder.on(Keyboarder.KEYS.RIGHT, function () {
   if (game.pirate.center.x < 325) game.pirate.center.x += 75;
