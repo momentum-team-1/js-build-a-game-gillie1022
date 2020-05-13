@@ -67,7 +67,8 @@ class Game {
       doubloon.center.y === pirate.center.y - doubloon.size.y / 2
     ) {
       console.log("SCORE");
-      drawDoubloon(screen)
+      //  add one point to score
+      //  clear and draw new doubloon
     }
 }}
 
