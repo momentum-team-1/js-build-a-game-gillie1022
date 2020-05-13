@@ -1,5 +1,4 @@
-let points = 0
-
+let points = 0;
 class Game {
   constructor() {
     let canvas = document.querySelector("#canvas");
@@ -13,16 +12,24 @@ class Game {
     // this.bodies = this.bodies.concat(new Pirate(gameSize))
     this.pirate = new Pirate(gameSize);
     this.doubloon = new Doubloon(gameSize, this.pirate);
-    this.cannonBall = new CannonBall(gameSize)
+    this.cannonBalls = [];
+    this.cannonBall = new CannonBall(gameSize);
+
     let animate = () => {
       this.drawOcean(screen);
       this.drawIsland(screen);
       this.drawPirate(screen);
       this.drawDoubloon(screen);
-      this.drawCannonball(screen)
+      for (let i of this.cannonBalls){this.updateCannonballs(screen, i)}
+      if (Math.random() > 0.995) {
+        this.cannonBalls.push(new CannonBall(gameSize));
+      }
+      for (let i of this.cannonBalls) {
+        this.drawCannonballs(screen, i);
+      }
       this.score(this.pirate, this.doubloon, gameSize);
-      this.drawPoints(screen)
-      this.drawBest(screen)
+      this.drawPoints(screen);
+      this.drawBest(screen);
       requestAnimationFrame(animate);
     };
     animate();
@@ -35,8 +42,8 @@ class Game {
   drawIsland(screen) {
     screen.fillStyle = "#e3cbbc";
     screen.fillRect(
-      this.island.size.x /2,
-      this.island.size.y /2,
+      this.island.size.x / 2,
+      this.island.size.y / 2,
       this.island.size.x,
       this.island.size.y
     );
@@ -67,12 +74,29 @@ class Game {
       doubloonHeight
     );
   }
-  drawCannonball(screen) {
-    screen.fillStyle = "grey"
-    let startingXPosition = this.cannonBall.center.x;
-    let startingYPosition = this.cannonBall.center.y;
-    let cannonBallWidth = this.cannonBall.size.x;
-    let cannonballHeight = this.cannonBall.size.y;
+  updateCannonballs(screen, cannonBall){
+    screen.fillStyle = "grey";
+    if (cannonBall.center.direction === "right"){
+   cannonBall.center.x+=3
+    }
+    if(cannonBall.center.direction === "left"){
+      cannonBall.center.x-=3
+    }
+    if (cannonBall.center.direction === "up"){
+      cannonBall.center.y-=3
+    }
+    if(cannonBall.center.direction === "down"){
+      cannonBall.center.y+=3
+    }
+  }
+
+  drawCannonballs(screen, cannonBall) {
+    screen.fillStyle = "grey";
+    let startingXPosition = cannonBall.center.x;
+    let startingYPosition = cannonBall.center.y;
+    let cannonBallWidth = cannonBall.size.x;
+    let cannonballHeight = cannonBall.size.y;
+
     screen.fillRect(
       startingXPosition,
       startingYPosition,
@@ -80,27 +104,31 @@ class Game {
       cannonballHeight
     );
   }
-  drawPoints(screen){
-    screen.fillStyle = "black"
-    screen.font = "32px Comic Sans MS"
-    screen.fillText("Score: "+points, 25, 50)
+  drawPoints(screen) {
+    screen.fillStyle = "black";
+    screen.font = "32px Comic Sans MS";
+    screen.fillText("Score: " + points, 25, 50);
   }
-  drawBest(screen){
-    screen.fillStyle = "black"
-    screen.font = "32px Comic Sans MS"
-    let best = 0
-    if (points > best){best = points;}
-    screen.fillText("Best: "+best, 25, 475)
-
+  drawBest(screen) {
+    screen.fillStyle = "black";
+    screen.font = "32px Comic Sans MS";
+    let best = 0;
+    if (points > best) {
+      best = points;
+    }
+    screen.fillText("Best: " + best, 25, 475);
   }
   score(pirate, doubloon, gameSize) {
     if (
       doubloon.center.x === pirate.center.x - doubloon.size.x / 2 &&
       doubloon.center.y === pirate.center.y - doubloon.size.y / 2
-    ) { console.log("SCORE");
-   ++points
-    doubloon.getRandomPosition(gameSize, pirate)
-}}}
+    ) {
+      console.log("SCORE");
+      ++points;
+      doubloon.getRandomPosition(gameSize, pirate);
+    }
+  }
+}
 
 class Ocean {
   constructor(gameSize) {
@@ -110,7 +138,7 @@ class Ocean {
 }
 class Island {
   constructor(gameSize) {
-    this.size = { x: gameSize.x/2, y: gameSize.y/2 };
+    this.size = { x: gameSize.x / 2, y: gameSize.y / 2 };
     this.center = { x: gameSize.x / 2, y: gameSize.y / 2 };
   }
 }
@@ -128,81 +156,113 @@ class Pirate {
 class Doubloon {
   constructor(gameSize, pirate) {
     this.size = { x: gameSize.x / 20, y: gameSize.y / 20 };
-    this.getRandomPosition(gameSize, pirate)}
-    getRandomPosition(gameSize, pirate){
-        let xArray = [
-          gameSize.x * 0.75 - this.size.x * 2.5,
-          gameSize.x * 0.5 - this.size.x / 2,
-          gameSize.x * 0.25 + this.size.x * 1.5,
-        ];
-        let yArray = [
-          gameSize.y * 0.25 + this.size.y * 1.5,
-          gameSize.y * 0.5 - this.size.y / 2,
-          gameSize.y * 0.75 - this.size.y * 2.5,
-        ];
-        this.center = {
-          x: xArray[getRandomInt(xArray.length)],
-          y: yArray[getRandomInt(yArray.length)],}
-      if(this.center.x === pirate.center.x - this.size.x / 2 &&
-        this.center.y === pirate.center.y - this.size.y / 2) {this.getRandomPosition(gameSize, pirate)}}
-        }
-      // top left
-      // x: gameSize.x * 0.25 + this.size.x * 1.5,
-      // y: gameSize.y * 0.25 + this.size.y * 1.5,
-      // top center
-      // x: gameSize.x * 0.5 - this.size.x/2,
-      // y: gameSize.y * 0.25 + this.size.y * 1.5, 
-      //  top right
-      // x: gameSize.x * 0.75 - this.size.x * 2.5,
-      // y: gameSize.y * 0.25 + this.size.y * 1.5,
-      // middle left
-      // x: gameSize.x * 0.25 + this.size.x * 1.5,
-      // y: gameSize.y * 0.5 - this.size.y / 2,
-      // middle center
-      // x: gameSize.x * 0.5 - this.size.x/2,
-      // y: gameSize.y * 0.5 - this.size.y / 2,
-      // middle right
-      // x: gameSize.x * 0.75 - this.size.x * 2.5,
-      // y: gameSize.y * 0.5 - this.size.y / 2,
-      // bottom left
-      // x: gameSize.x * 0.25 + this.size.x * 1.5,
-      // y: gameSize.y * 0.75 - this.size.y * 2.5,
-      // bottom center
-      // x: gameSize.x * 0.5 - this.size.x/2,
-      // y: gameSize.y * 0.75 - this.size.y * 2.5,
-      // bottom right
-      // x: gameSize.x * 0.75 - this.size.x * 2.5,
-      // y: gameSize.y * 0.75 - this.size.y * 2.5,
-    
-  
+    this.getRandomPosition(gameSize, pirate);
+  }
 
+  getRandomPosition(gameSize, pirate) {
+    let xArray = [
+      gameSize.x * 0.75 - this.size.x * 2.5,
+      gameSize.x * 0.5 - this.size.x / 2,
+      gameSize.x * 0.25 + this.size.x * 1.5,
+    ];
+    let yArray = [
+      gameSize.y * 0.25 + this.size.y * 1.5,
+      gameSize.y * 0.5 - this.size.y / 2,
+      gameSize.y * 0.75 - this.size.y * 2.5,
+    ];
+    this.center = {
+      x: xArray[getRandomInt(xArray.length)],
+      y: yArray[getRandomInt(yArray.length)],
+    };
+    if (
+      this.center.x === pirate.center.x - this.size.x / 2 &&
+      this.center.y === pirate.center.y - this.size.y / 2
+    ) {
+      this.getRandomPosition(gameSize, pirate);
+    }
+  }
+}
+// top left
+// x: gameSize.x * 0.25 + this.size.x * 1.5,
+// y: gameSize.y * 0.25 + this.size.y * 1.5,
+// top center
+// x: gameSize.x * 0.5 - this.size.x/2,
+// y: gameSize.y * 0.25 + this.size.y * 1.5,
+//  top right
+// x: gameSize.x * 0.75 - this.size.x * 2.5,
+// y: gameSize.y * 0.25 + this.size.y * 1.5,
+// middle left
+// x: gameSize.x * 0.25 + this.size.x * 1.5,
+// y: gameSize.y * 0.5 - this.size.y / 2,
+// middle center
+// x: gameSize.x * 0.5 - this.size.x/2,
+// y: gameSize.y * 0.5 - this.size.y / 2,
+// middle right
+// x: gameSize.x * 0.75 - this.size.x * 2.5,
+// y: gameSize.y * 0.5 - this.size.y / 2,
+// bottom left
+// x: gameSize.x * 0.25 + this.size.x * 1.5,
+// y: gameSize.y * 0.75 - this.size.y * 2.5,
+// bottom center
+// x: gameSize.x * 0.5 - this.size.x/2,
+// y: gameSize.y * 0.75 - this.size.y * 2.5,
+// bottom right
+// x: gameSize.x * 0.75 - this.size.x * 2.5,
+// y: gameSize.y * 0.75 - this.size.y * 2.5,
 
 class CannonBall {
   constructor(gameSize) {
     this.size = { x: gameSize.x / 20, y: gameSize.y / 20 };
-    this.getRandomPosition(gameSize)
-
+    this.getRandomPosition(gameSize);
   }
-  getRandomPosition(gameSize){
+  getRandomPosition(gameSize) {
     let positionArray = [
-      {x: gameSize.x * 0.25 + this.size.x * 1.5, y: 0},
-      {x: gameSize.x * 0.5 - this.size.x / 2, y: 0},
-      {x: gameSize.x * 0.75 - this.size.x * 2.5, y: 0},
-      {x: gameSize.x - this.size.x, y: gameSize.y * 0.25 + this.size.y * 1.5},
-      {x: gameSize.x - this.size.x, y: gameSize.y * 0.5 - this.size.y / 2},
-      {x: gameSize.x - this.size.x, y: gameSize.y * 0.75 - this.size.y * 2.5},
-      {x: gameSize.x * 0.75 - this.size.x * 2.5, y: gameSize.y - this.size.y},
-      {x: gameSize.x * 0.5 - this.size.x / 2, y: gameSize.y - this.size.y},
-      {x: gameSize.x * 0.25 + this.size.x * 1.5, y: gameSize.y - this.size.y},
-      {x: gameSize.x * 0.5 - this.size.x / 2, y: 0},
-      {x: 0, y: gameSize.y * 0.75 - this.size.y * 2.5},
-      {x: 0, y: gameSize.y * 0.5 - this.size.y / 2},
-      {x: 0, y: gameSize.y * 0.25 + this.size.y * 1.5}]
-      this.center = positionArray[getRandomInt(positionArray.length)]
-
+      { x: gameSize.x * 0.25 + this.size.x * 1.5, y: 0, direction: "down" },
+      { x: gameSize.x * 0.5 - this.size.x / 2, y: 0, direction: "down" },
+      { x: gameSize.x * 0.75 - this.size.x * 2.5, y: 0, direction: "down" },
+      {
+        x: gameSize.x - this.size.x,
+        y: gameSize.y * 0.25 + this.size.y * 1.5,
+        direction: "left",
+      },
+      {
+        x: gameSize.x - this.size.x,
+        y: gameSize.y * 0.5 - this.size.y / 2,
+        direction: "left",
+      },
+      {
+        x: gameSize.x - this.size.x,
+        y: gameSize.y * 0.75 - this.size.y * 2.5,
+        direction: "left",
+      },
+      {
+        x: gameSize.x * 0.75 - this.size.x * 2.5,
+        y: gameSize.y - this.size.y,
+        direction: "up",
+      },
+      {
+        x: gameSize.x * 0.5 - this.size.x / 2,
+        y: gameSize.y - this.size.y,
+        direction: "up",
+      },
+      {
+        x: gameSize.x * 0.25 + this.size.x * 1.5,
+        y: gameSize.y - this.size.y,
+        direction: "up",
+      },
+      { x: 0, y: gameSize.y * 0.75 - this.size.y * 2.5, direction: "right" },
+      { x: 0, y: gameSize.y * 0.5 - this.size.y / 2, direction: "right" },
+      { x: 0, y: gameSize.y * 0.25 + this.size.y * 1.5, direction: "right" },
+    ];
+    this.center = positionArray[getRandomInt(positionArray.length)];
   }
+//   update(cannonball){
+//     if(cannonball.center.direction === "right"){this.center.x++}
+//     if(direction === "left"){this.center.x--}
+//     if(direction === "up"){this.center.y--}
+//     if(direction === "down"){this.center.y++}
+// }
 }
-
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
