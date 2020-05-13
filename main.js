@@ -1,4 +1,5 @@
 let points = 0;
+let best = 0;
 class Game {
   constructor() {
     let canvas = document.querySelector("#canvas");
@@ -23,6 +24,9 @@ class Game {
       for (let i of this.cannonBalls) {
         this.updateCannonballs(screen, i);
       }
+      for (let i of this.cannonBalls){if (colliding(this.pirate,i) === true){
+        points = 0
+      }}
       if (Math.random() > 0.99) {
         this.cannonBalls.push(new CannonBall(gameSize));
       }
@@ -30,9 +34,9 @@ class Game {
         this.drawCannonballs(screen, i);
       }
       // this.collision(this.pirate, connonball)
+      this.drawBest(screen);
       this.score(this.pirate, this.doubloon, gameSize);
       this.drawPoints(screen);
-      this.drawBest(screen);
       requestAnimationFrame(animate);
     };
     animate();
@@ -116,7 +120,7 @@ class Game {
   drawBest(screen) {
     screen.fillStyle = "black";
     screen.font = "32px Comic Sans MS";
-    let best = 0;
+    
     if (points > best) {
       best = points;
     }
@@ -267,18 +271,14 @@ class CannonBall {
   //     if(direction === "down"){this.center.y++}
   // }
 }
-function collisionTest(pirate, cannonBall) {
-  if (
-    pirate.center.x + pirate.size.x / 2 <
-      cannonBall.center.x - cannonBall.size.x / 2 ||
-    pirate.center.y + pirate.size.y / 2 <
-      cannonBall.center.y - cannonBall.size.y / 2 ||
-    pirate.center.x - pirate.size.x / 2 >
-      cannonBall.center.x + cannonBall.center.x / 2 ||
-    pirate.center.y - pirate.center.y / 2 >
-      cannonBall.center.y + cannonBall.center.y / 2
-  ) {return false
-  }
+function colliding (pirate, cannonBall) {
+  return !(
+    pirate === cannonBall ||
+        pirate.center.x + pirate.size.x / 2 < cannonBall.center.x - cannonBall.size.x / 2 ||
+        pirate.center.y + pirate.size.y / 2 < cannonBall.center.y - cannonBall.size.y / 2 ||
+        pirate.center.x - pirate.size.x / 2 > cannonBall.center.x + cannonBall.size.x / 2 ||
+        pirate.center.y - pirate.size.y / 2 > cannonBall.center.y + cannonBall.size.y / 2
+  )
 }
 
 function getRandomInt(max) {
