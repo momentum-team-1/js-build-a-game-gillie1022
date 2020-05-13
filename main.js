@@ -1,6 +1,6 @@
 let points = 0;
 let best = 0;
-let song = new Audio("audio/13 Norwegian Pirate.m4a");
+let song = new Audio("https://files.freemusicarchive.org/storage-freemusicarchive-org/music/Oddio_Overplay/frievents_Orchestra/Pirate_Pop/frievents_Orchestra_-_08_-_Brave_Pirates.mp3");
 class Game {
   constructor() {
     let canvas = document.querySelector("#canvas");
@@ -34,7 +34,6 @@ class Game {
       for (let i of this.cannonBalls) {
         this.drawCannonballs(screen, i);
       }
-      // this.collision(this.pirate, connonball)
       this.drawBest(screen);
       this.score(this.pirate, this.doubloon, gameSize);
       this.drawPoints(screen);
