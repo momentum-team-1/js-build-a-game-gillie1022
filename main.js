@@ -20,13 +20,16 @@ class Game {
       this.drawIsland(screen);
       this.drawPirate(screen);
       this.drawDoubloon(screen);
-      for (let i of this.cannonBalls){this.updateCannonballs(screen, i)}
-      if (Math.random() > 0.995) {
+      for (let i of this.cannonBalls) {
+        this.updateCannonballs(screen, i);
+      }
+      if (Math.random() > 0.99) {
         this.cannonBalls.push(new CannonBall(gameSize));
       }
       for (let i of this.cannonBalls) {
         this.drawCannonballs(screen, i);
       }
+      // this.collision(this.pirate, connonball)
       this.score(this.pirate, this.doubloon, gameSize);
       this.drawPoints(screen);
       this.drawBest(screen);
@@ -74,21 +77,22 @@ class Game {
       doubloonHeight
     );
   }
-  updateCannonballs(screen, cannonBall){
+  updateCannonballs(screen, cannonBall) {
     screen.fillStyle = "grey";
-    if (cannonBall.center.direction === "right"){
-   cannonBall.center.x+=3
+    if (cannonBall.center.direction === "right") {
+      cannonBall.center.x += 3;
     }
-    if(cannonBall.center.direction === "left"){
-      cannonBall.center.x-=3
+    if (cannonBall.center.direction === "left") {
+      cannonBall.center.x -= 3;
     }
-    if (cannonBall.center.direction === "up"){
-      cannonBall.center.y-=3
+    if (cannonBall.center.direction === "up") {
+      cannonBall.center.y -= 3;
     }
-    if(cannonBall.center.direction === "down"){
-      cannonBall.center.y+=3
+    if (cannonBall.center.direction === "down") {
+      cannonBall.center.y += 3;
     }
   }
+
 
   drawCannonballs(screen, cannonBall) {
     screen.fillStyle = "grey";
@@ -256,12 +260,25 @@ class CannonBall {
     ];
     this.center = positionArray[getRandomInt(positionArray.length)];
   }
-//   update(cannonball){
-//     if(cannonball.center.direction === "right"){this.center.x++}
-//     if(direction === "left"){this.center.x--}
-//     if(direction === "up"){this.center.y--}
-//     if(direction === "down"){this.center.y++}
-// }
+  //   update(cannonball){
+  //     if(cannonball.center.direction === "right"){this.center.x++}
+  //     if(direction === "left"){this.center.x--}
+  //     if(direction === "up"){this.center.y--}
+  //     if(direction === "down"){this.center.y++}
+  // }
+}
+function collisionTest(pirate, cannonBall) {
+  if (
+    pirate.center.x + pirate.size.x / 2 <
+      cannonBall.center.x - cannonBall.size.x / 2 ||
+    pirate.center.y + pirate.size.y / 2 <
+      cannonBall.center.y - cannonBall.size.y / 2 ||
+    pirate.center.x - pirate.size.x / 2 >
+      cannonBall.center.x + cannonBall.center.x / 2 ||
+    pirate.center.y - pirate.center.y / 2 >
+      cannonBall.center.y + cannonBall.center.y / 2
+  ) {return false
+  }
 }
 
 function getRandomInt(max) {
