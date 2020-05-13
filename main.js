@@ -1,5 +1,6 @@
 let points = 0;
 let best = 0;
+let song = new Audio("audio/13 Norwegian Pirate.m4a");
 class Game {
   constructor() {
     let canvas = document.querySelector("#canvas");
@@ -9,8 +10,6 @@ class Game {
     let gameSize = { x: canvas.width, y: canvas.height };
     this.ocean = new Ocean(gameSize);
     this.island = new Island(gameSize);
-    // let bodies = []
-    // this.bodies = this.bodies.concat(new Pirate(gameSize))
     this.pirate = new Pirate(gameSize);
     this.doubloon = new Doubloon(gameSize, this.pirate);
     this.cannonBalls = [];
@@ -24,9 +23,11 @@ class Game {
       for (let i of this.cannonBalls) {
         this.updateCannonballs(screen, i);
       }
-      for (let i of this.cannonBalls){if (colliding(this.pirate,i) === true){
-        points = 0
-      }}
+      for (let i of this.cannonBalls) {
+        if (colliding(this.pirate, i) === true) {
+          points = 0;
+        }
+      }
       if (Math.random() > 0.99) {
         this.cannonBalls.push(new CannonBall(gameSize));
       }
@@ -97,7 +98,6 @@ class Game {
     }
   }
 
-
   drawCannonballs(screen, cannonBall) {
     screen.fillStyle = "grey";
     let startingXPosition = cannonBall.center.x;
@@ -120,7 +120,7 @@ class Game {
   drawBest(screen) {
     screen.fillStyle = "black";
     screen.font = "32px Comic Sans MS";
-    
+
     if (points > best) {
       best = points;
     }
@@ -190,34 +190,6 @@ class Doubloon {
     }
   }
 }
-// top left
-// x: gameSize.x * 0.25 + this.size.x * 1.5,
-// y: gameSize.y * 0.25 + this.size.y * 1.5,
-// top center
-// x: gameSize.x * 0.5 - this.size.x/2,
-// y: gameSize.y * 0.25 + this.size.y * 1.5,
-//  top right
-// x: gameSize.x * 0.75 - this.size.x * 2.5,
-// y: gameSize.y * 0.25 + this.size.y * 1.5,
-// middle left
-// x: gameSize.x * 0.25 + this.size.x * 1.5,
-// y: gameSize.y * 0.5 - this.size.y / 2,
-// middle center
-// x: gameSize.x * 0.5 - this.size.x/2,
-// y: gameSize.y * 0.5 - this.size.y / 2,
-// middle right
-// x: gameSize.x * 0.75 - this.size.x * 2.5,
-// y: gameSize.y * 0.5 - this.size.y / 2,
-// bottom left
-// x: gameSize.x * 0.25 + this.size.x * 1.5,
-// y: gameSize.y * 0.75 - this.size.y * 2.5,
-// bottom center
-// x: gameSize.x * 0.5 - this.size.x/2,
-// y: gameSize.y * 0.75 - this.size.y * 2.5,
-// bottom right
-// x: gameSize.x * 0.75 - this.size.x * 2.5,
-// y: gameSize.y * 0.75 - this.size.y * 2.5,
-
 class CannonBall {
   constructor(gameSize) {
     this.size = { x: gameSize.x / 20, y: gameSize.y / 20 };
@@ -264,21 +236,19 @@ class CannonBall {
     ];
     this.center = positionArray[getRandomInt(positionArray.length)];
   }
-  //   update(cannonball){
-  //     if(cannonball.center.direction === "right"){this.center.x++}
-  //     if(direction === "left"){this.center.x--}
-  //     if(direction === "up"){this.center.y--}
-  //     if(direction === "down"){this.center.y++}
-  // }
 }
-function colliding (pirate, cannonBall) {
+function colliding(pirate, cannonBall) {
   return !(
     pirate === cannonBall ||
-        pirate.center.x + pirate.size.x / 2 < cannonBall.center.x - cannonBall.size.x / 2 ||
-        pirate.center.y + pirate.size.y / 2 < cannonBall.center.y - cannonBall.size.y / 2 ||
-        pirate.center.x - pirate.size.x / 2 > cannonBall.center.x + cannonBall.size.x / 2 ||
-        pirate.center.y - pirate.size.y / 2 > cannonBall.center.y + cannonBall.size.y / 2
-  )
+    pirate.center.x + pirate.size.x / 2 <
+      cannonBall.center.x - cannonBall.size.x / 2 ||
+    pirate.center.y + pirate.size.y / 2 <
+      cannonBall.center.y - cannonBall.size.y / 2 ||
+    pirate.center.x - pirate.size.x / 2 >
+      cannonBall.center.x + cannonBall.size.x / 2 ||
+    pirate.center.y - pirate.size.y / 2 >
+      cannonBall.center.y + cannonBall.size.y / 2
+  );
 }
 
 function getRandomInt(max) {
@@ -286,6 +256,10 @@ function getRandomInt(max) {
 }
 
 let game = new Game();
+
+window.addEventListener("keydown", (event) => {
+  song.play();
+});
 
 Keyboarder.on(Keyboarder.KEYS.RIGHT, function () {
   if (game.pirate.center.x < 325) game.pirate.center.x += 75;
