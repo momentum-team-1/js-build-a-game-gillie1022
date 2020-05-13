@@ -13,11 +13,13 @@ class Game {
     // this.bodies = this.bodies.concat(new Pirate(gameSize))
     this.pirate = new Pirate(gameSize);
     this.doubloon = new Doubloon(gameSize, this.pirate);
+    this.cannonBall = new CannonBall(gameSize)
     let animate = () => {
       this.drawOcean(screen);
       this.drawIsland(screen);
       this.drawPirate(screen);
       this.drawDoubloon(screen);
+      this.drawCannonball(screen)
       this.score(this.pirate, this.doubloon, gameSize);
       this.drawPoints(screen)
       requestAnimationFrame(animate);
@@ -65,11 +67,11 @@ class Game {
     );
   }
   drawCannonball(screen) {
-    screen.fillStyle = "dark-grey"
+    screen.fillStyle = "grey"
     let startingXPosition = this.cannonBall.center.x;
     let startingYPosition = this.cannonBall.center.y;
-    let cannonBallWidth = this.cannonball.size.x;
-    let cannonballHeight = this.cannonball.size.y;
+    let cannonBallWidth = this.cannonBall.size.x;
+    let cannonballHeight = this.cannonBall.size.y;
     screen.fillRect(
       startingXPosition,
       startingYPosition,
@@ -80,7 +82,7 @@ class Game {
   drawPoints(screen){
     screen.fillStyle = "black"
     screen.font = "32px Comic Sans MS"
-    screen.fillText(points, 25, 25)
+    screen.fillText("Score: "+points, 25, 50)
   }
   score(pirate, doubloon, gameSize) {
     if (
@@ -132,8 +134,6 @@ class Doubloon {
         this.center = {
           x: xArray[getRandomInt(xArray.length)],
           y: yArray[getRandomInt(yArray.length)],}
-      let px = pirate.center.x
-      let py = pirate.center.y
       if(this.center.x === pirate.center.x - this.size.x / 2 &&
         this.center.y === pirate.center.y - this.size.y / 2) {this.getRandomPosition(gameSize, pirate)}}
         }
@@ -170,8 +170,26 @@ class Doubloon {
 
 class CannonBall {
   constructor(gameSize) {
-    this.size = { x: gameSize.x / 20, y: gameSize / 20 };
-    this.center
+    this.size = { x: gameSize.x / 20, y: gameSize.y / 20 };
+    this.getRandomPosition(gameSize)
+
+  }
+  getRandomPosition(gameSize){
+    let positionArray = [
+      {x: gameSize.x * 0.25 + this.size.x * 1.5, y: 0},
+      {x: gameSize.x * 0.5 - this.size.x / 2, y: 0},
+      {x: gameSize.x * 0.75 - this.size.x * 2.5, y: 0},
+      {x: gameSize.x - this.size.x, y: gameSize.y * 0.25 + this.size.y * 1.5},
+      {x: gameSize.x - this.size.x, y: gameSize.y * 0.5 - this.size.y / 2},
+      {x: gameSize.x - this.size.x, y: gameSize.y * 0.75 - this.size.y * 2.5},
+      {x: gameSize.x * 0.75 - this.size.x * 2.5, y: gameSize.y - this.size.y},
+      {x: gameSize.x * 0.5 - this.size.x / 2, y: gameSize.y - this.size.y},
+      {x: gameSize.x * 0.25 + this.size.x * 1.5, y: gameSize.y - this.size.y},
+      {x: gameSize.x * 0.5 - this.size.x / 2, y: 0},
+      {x: 0, y: gameSize.y * 0.75 - this.size.y * 2.5},
+      {x: 0, y: gameSize.y * 0.5 - this.size.y / 2},
+      {x: 0, y: gameSize.y * 0.25 + this.size.y * 1.5}]
+      this.center = positionArray[getRandomInt(positionArray.length)]
 
   }
 }
