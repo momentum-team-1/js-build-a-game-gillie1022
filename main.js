@@ -22,6 +22,7 @@ class Game {
       this.drawCannonball(screen)
       this.score(this.pirate, this.doubloon, gameSize);
       this.drawPoints(screen)
+      this.drawBest(screen)
       requestAnimationFrame(animate);
     };
     animate();
@@ -83,6 +84,14 @@ class Game {
     screen.fillStyle = "black"
     screen.font = "32px Comic Sans MS"
     screen.fillText("Score: "+points, 25, 50)
+  }
+  drawBest(screen){
+    screen.fillStyle = "black"
+    screen.font = "32px Comic Sans MS"
+    let best = 0
+    if (points > best){best = points;}
+    screen.fillText("Best: "+best, 25, 475)
+
   }
   score(pirate, doubloon, gameSize) {
     if (
