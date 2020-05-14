@@ -1,6 +1,8 @@
 let points = 0;
 let best = 0;
-let song = new Audio("https://files.freemusicarchive.org/storage-freemusicarchive-org/music/Oddio_Overplay/frievents_Orchestra/Pirate_Pop/frievents_Orchestra_-_08_-_Brave_Pirates.mp3");
+let song = new Audio(
+  "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/Oddio_Overplay/frievents_Orchestra/Pirate_Pop/frievents_Orchestra_-_08_-_Brave_Pirates.mp3"
+);
 class Game {
   constructor() {
     let canvas = document.querySelector("#canvas");
@@ -24,8 +26,9 @@ class Game {
         this.updateCannonballs(screen, i);
       }
       for (let i of this.cannonBalls) {
-        if (colliding(this.pirate, i) === true) {
+        if (colliding(this.pirate, i)) {
           points = 0;
+          this.cannonBalls.splice(this.cannonBalls.indexOf(i), 1);
         }
       }
       if (Math.random() > 0.99) {
@@ -196,42 +199,42 @@ class CannonBall {
   }
   getRandomPosition(gameSize) {
     let positionArray = [
-      { x: gameSize.x * 0.25 + this.size.x * 1.5, y: 0, direction: "down" },
-      { x: gameSize.x * 0.5 - this.size.x / 2, y: 0, direction: "down" },
-      { x: gameSize.x * 0.75 - this.size.x * 2.5, y: 0, direction: "down" },
+      { x: gameSize.x * 0.25 + this.size.x * 1.5, y: -this.size.y, direction: "down" },
+      { x: gameSize.x * 0.5 - this.size.x / 2, y: -this.size.y, direction: "down" },
+      { x: gameSize.x * 0.75 - this.size.x * 2.5, y: -this.size.y, direction: "down" },
       {
-        x: gameSize.x - this.size.x,
+        x: gameSize.x,
         y: gameSize.y * 0.25 + this.size.y * 1.5,
         direction: "left",
       },
       {
-        x: gameSize.x - this.size.x,
+        x: gameSize.x,
         y: gameSize.y * 0.5 - this.size.y / 2,
         direction: "left",
       },
       {
-        x: gameSize.x - this.size.x,
+        x: gameSize.x,
         y: gameSize.y * 0.75 - this.size.y * 2.5,
         direction: "left",
       },
       {
         x: gameSize.x * 0.75 - this.size.x * 2.5,
-        y: gameSize.y - this.size.y,
+        y: gameSize.y,
         direction: "up",
       },
       {
         x: gameSize.x * 0.5 - this.size.x / 2,
-        y: gameSize.y - this.size.y,
+        y: gameSize.y,
         direction: "up",
       },
       {
         x: gameSize.x * 0.25 + this.size.x * 1.5,
-        y: gameSize.y - this.size.y,
+        y: gameSize.y,
         direction: "up",
       },
-      { x: 0, y: gameSize.y * 0.75 - this.size.y * 2.5, direction: "right" },
-      { x: 0, y: gameSize.y * 0.5 - this.size.y / 2, direction: "right" },
-      { x: 0, y: gameSize.y * 0.25 + this.size.y * 1.5, direction: "right" },
+      { x: -this.size.x, y: gameSize.y * 0.75 - this.size.y * 2.5, direction: "right" },
+      { x: -this.size.x, y: gameSize.y * 0.5 - this.size.y / 2, direction: "right" },
+      { x: -this.size.x, y: gameSize.y * 0.25 + this.size.y * 1.5, direction: "right" },
     ];
     this.center = positionArray[getRandomInt(positionArray.length)];
   }
@@ -239,14 +242,12 @@ class CannonBall {
 function colliding(pirate, cannonBall) {
   return !(
     pirate === cannonBall ||
-    pirate.center.x + pirate.size.x / 2 <
-      cannonBall.center.x - cannonBall.size.x / 2 ||
-    pirate.center.y + pirate.size.y / 2 <
-      cannonBall.center.y - cannonBall.size.y / 2 ||
+    pirate.center.x + pirate.size.x / 2 < cannonBall.center.x ||
+    pirate.center.y + pirate.size.y / 2 < cannonBall.center.y ||
     pirate.center.x - pirate.size.x / 2 >
-      cannonBall.center.x + cannonBall.size.x / 2 ||
+      cannonBall.center.x + cannonBall.size.x ||
     pirate.center.y - pirate.size.y / 2 >
-      cannonBall.center.y + cannonBall.size.y / 2
+      cannonBall.center.y + cannonBall.size.y
   );
 }
 

@@ -1,0 +1,28 @@
+body {
+    background-color: #062dda;
+  font-family: "Comic Sans MS", cursive;
+  color: white;
+  display: flex;
+  justify-content: center;
+}
+.gameDiv {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+header{display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.copy{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+p{ font-size: 20px;
+    width: 500px;
+}
+
+
