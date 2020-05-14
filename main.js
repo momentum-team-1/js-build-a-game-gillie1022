@@ -1,8 +1,11 @@
-let points = 0;
-let best = 0;
 let song = new Audio(
   "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/Oddio_Overplay/frievents_Orchestra/Pirate_Pop/frievents_Orchestra_-_08_-_Brave_Pirates.mp3"
-);
+  );
+  window.addEventListener("keydown", (event) => {
+    song.play();
+  });
+  let points = 0;
+  let best = 0;
 class Game {
   constructor() {
     let canvas = document.querySelector("#canvas");
@@ -101,7 +104,7 @@ class Game {
   }
 
   drawCannonballs(screen, cannonBall) {
-    screen.fillStyle = "grey";
+    // screen.fillStyle = "grey";
     let startingXPosition = cannonBall.center.x;
     let startingYPosition = cannonBall.center.y;
     let cannonBallWidth = cannonBall.size.x;
@@ -256,10 +259,6 @@ function getRandomInt(max) {
 }
 
 let game = new Game();
-
-window.addEventListener("keydown", (event) => {
-  song.play();
-});
 
 Keyboarder.on(Keyboarder.KEYS.RIGHT, function () {
   if (game.pirate.center.x < 325) game.pirate.center.x += 75;
