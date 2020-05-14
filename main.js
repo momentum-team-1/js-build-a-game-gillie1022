@@ -1,11 +1,13 @@
 let song = new Audio(
   "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/Oddio_Overplay/frievents_Orchestra/Pirate_Pop/frievents_Orchestra_-_08_-_Brave_Pirates.mp3"
-  );
-  window.addEventListener("keydown", (event) => {
-    song.play();
-  });
-  let points = 0;
-  let best = 0;
+);
+window.addEventListener("keydown", (event) => {
+  song.play();
+});
+
+let points = 0;
+let best = 0;
+
 class Game {
   constructor() {
     let canvas = document.querySelector("#canvas");
@@ -18,7 +20,6 @@ class Game {
     this.pirate = new Pirate(gameSize);
     this.doubloon = new Doubloon(gameSize, this.pirate);
     this.cannonBalls = [];
-    this.cannonBall = new CannonBall(gameSize);
 
     let animate = () => {
       this.drawOcean(screen);
@@ -52,6 +53,7 @@ class Game {
     screen.fillStyle = "#5290f2";
     screen.fillRect(0, 0, this.ocean.size.x, this.ocean.size.y);
   }
+
   drawIsland(screen) {
     screen.fillStyle = "#e3cbbc";
     screen.fillRect(
@@ -61,6 +63,7 @@ class Game {
       this.island.size.y
     );
   }
+
   drawPirate(screen) {
     screen.fillStyle = "black";
     let startingXPosition = this.pirate.center.x - this.pirate.size.x / 2;
@@ -74,6 +77,7 @@ class Game {
       pirateHeight
     );
   }
+
   drawDoubloon(screen) {
     screen.fillStyle = "gold";
     let startingXPosition = this.doubloon.center.x;
@@ -87,6 +91,7 @@ class Game {
       doubloonHeight
     );
   }
+
   updateCannonballs(screen, cannonBall) {
     screen.fillStyle = "grey";
     if (cannonBall.center.direction === "right") {
@@ -104,12 +109,10 @@ class Game {
   }
 
   drawCannonballs(screen, cannonBall) {
-    // screen.fillStyle = "grey";
     let startingXPosition = cannonBall.center.x;
     let startingYPosition = cannonBall.center.y;
     let cannonBallWidth = cannonBall.size.x;
     let cannonballHeight = cannonBall.size.y;
-
     screen.fillRect(
       startingXPosition,
       startingYPosition,
@@ -117,11 +120,13 @@ class Game {
       cannonballHeight
     );
   }
+
   drawPoints(screen) {
     screen.fillStyle = "black";
     screen.font = "32px Comic Sans MS";
     screen.fillText("Score: " + points, 25, 50);
   }
+
   drawBest(screen) {
     screen.fillStyle = "black";
     screen.font = "32px Comic Sans MS";
@@ -131,12 +136,12 @@ class Game {
     }
     screen.fillText("Best: " + best, 25, 475);
   }
+
   score(pirate, doubloon, gameSize) {
     if (
       doubloon.center.x === pirate.center.x - doubloon.size.x / 2 &&
       doubloon.center.y === pirate.center.y - doubloon.size.y / 2
     ) {
-      console.log("SCORE");
       ++points;
       doubloon.getRandomPosition(gameSize, pirate);
     }
@@ -149,6 +154,7 @@ class Ocean {
     this.center = { x: gameSize.x / 2, y: gameSize.y / 2 };
   }
 }
+
 class Island {
   constructor(gameSize) {
     this.size = { x: gameSize.x / 2, y: gameSize.y / 2 };
@@ -195,16 +201,30 @@ class Doubloon {
     }
   }
 }
+
 class CannonBall {
   constructor(gameSize) {
     this.size = { x: gameSize.x / 20, y: gameSize.y / 20 };
     this.getRandomPosition(gameSize);
   }
+
   getRandomPosition(gameSize) {
     let positionArray = [
-      { x: gameSize.x * 0.25 + this.size.x * 1.5, y: -this.size.y, direction: "down" },
-      { x: gameSize.x * 0.5 - this.size.x / 2, y: -this.size.y, direction: "down" },
-      { x: gameSize.x * 0.75 - this.size.x * 2.5, y: -this.size.y, direction: "down" },
+      {
+        x: gameSize.x * 0.25 + this.size.x * 1.5,
+        y: -this.size.y,
+        direction: "down",
+      },
+      {
+        x: gameSize.x * 0.5 - this.size.x / 2,
+        y: -this.size.y,
+        direction: "down",
+      },
+      {
+        x: gameSize.x * 0.75 - this.size.x * 2.5,
+        y: -this.size.y,
+        direction: "down",
+      },
       {
         x: gameSize.x,
         y: gameSize.y * 0.25 + this.size.y * 1.5,
@@ -235,13 +255,26 @@ class CannonBall {
         y: gameSize.y,
         direction: "up",
       },
-      { x: -this.size.x, y: gameSize.y * 0.75 - this.size.y * 2.5, direction: "right" },
-      { x: -this.size.x, y: gameSize.y * 0.5 - this.size.y / 2, direction: "right" },
-      { x: -this.size.x, y: gameSize.y * 0.25 + this.size.y * 1.5, direction: "right" },
+      {
+        x: -this.size.x,
+        y: gameSize.y * 0.75 - this.size.y * 2.5,
+        direction: "right",
+      },
+      {
+        x: -this.size.x,
+        y: gameSize.y * 0.5 - this.size.y / 2,
+        direction: "right",
+      },
+      {
+        x: -this.size.x,
+        y: gameSize.y * 0.25 + this.size.y * 1.5,
+        direction: "right",
+      },
     ];
     this.center = positionArray[getRandomInt(positionArray.length)];
   }
 }
+
 function colliding(pirate, cannonBall) {
   return !(
     pirate === cannonBall ||
