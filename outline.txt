@@ -1,0 +1,30 @@
+class - Game
+
+    Responsibilities
+        keep score
+        
+    Collaborators
+
+class
+
+    Responsibilities
+
+    Collaborators
+
+class
+
+    Responsibilities
+
+    Collaborators
+
+class
+
+    Responsibilities
+
+    Collaborators
+
+class
+
+    Responsibilities
+
+    Collaborators
